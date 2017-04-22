@@ -5,12 +5,12 @@ package com.namle.app;
  */
 public class LinkedInt implements ILinkedInt{
 
-    private IIntNode node;
+    private IIntNode firstNode;
 
     @Override
     public boolean addItem(int value) {
-        if(node == null){
-            node = new IntNode(value);
+        if(firstNode == null){
+            firstNode = new IntNode(value);
         } else {
             IIntNode newNode = new IntNode(value);
             IIntNode lastNode = getLastItem();
@@ -20,10 +20,10 @@ public class LinkedInt implements ILinkedInt{
     }
 
     private IIntNode getLastItem(){
-        if(node == null){
-            return node;
+        if(firstNode == null){
+            return firstNode;
         }
-        IIntNode lastNode = node;
+        IIntNode lastNode = firstNode;
         while(lastNode.getNextNode() != null){
             lastNode = lastNode.getNextNode();
         }
@@ -31,35 +31,39 @@ public class LinkedInt implements ILinkedInt{
     }
 
     @Override
-    public IIntNode removeTail() {
-        if(node == null || node.getNextNode() == null){
-            node = null;
-            return node;
+    public boolean removeTail() {
+        if(firstNode == null){
+            return false;
         }
-        IIntNode currentNode = node;
+        if(firstNode.getNextNode() == null){
+            firstNode = null;
+            return true;
+        }
+
+        IIntNode currentNode = firstNode;
         IIntNode lastNode = this.getLastItem();
         while (currentNode.getNextNode() != lastNode){
             currentNode = currentNode.getNextNode();
         }
         currentNode.setNextNode(null);
-        return lastNode;
+        return true;
     }
 
     /*
-    Return number of item that is removed
+        Return number of items that are removed
      */
     @Override
     public int removeItemGreaterThan(int targetValue) {
         int removedItem = 0;
-        if(node != null){
-            IIntNode currentNode = node;
+        if(firstNode != null){
+            IIntNode currentNode = firstNode;
             IIntNode theNodeBeforeCurrentNode = new IntNode();
-            theNodeBeforeCurrentNode.setNextNode(node);
+            theNodeBeforeCurrentNode.setNextNode(firstNode);
             do {
                 int currentValue = currentNode.getValue();
                 if(currentValue > targetValue){
-                    if(currentNode == node){ //if the first node is the node to remove then move it next
-                        node = node.getNextNode();
+                    if(currentNode == firstNode){ //if the first node is the node to remove then move it next
+                        firstNode = firstNode.getNextNode();
                         currentNode = theNodeBeforeCurrentNode;
                     } else {
                         theNodeBeforeCurrentNode.setNextNode(currentNode.getNextNode());
@@ -76,8 +80,8 @@ public class LinkedInt implements ILinkedInt{
 
     public void printAllItem(){
         int counter = 0;
-        if(node != null){
-            IIntNode currentNode = node;
+        if(firstNode != null){
+            IIntNode currentNode = firstNode;
             do {
                 System.out.println("Item position: " + counter + " value: " + currentNode.getValue());
                 counter++;

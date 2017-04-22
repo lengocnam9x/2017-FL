@@ -5,7 +5,7 @@ package com.namle.app;
  */
 public interface ILinkedInt {
     boolean addItem(int value);
-    IIntNode removeTail();
+    boolean removeTail();
     int removeItemGreaterThan(int targetValue);
     void printAllItem();
 
